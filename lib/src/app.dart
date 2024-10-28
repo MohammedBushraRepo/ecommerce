@@ -1,4 +1,4 @@
-import 'package:ecommerce/src/features/products_list/products_list_screen.dart';
+import 'package:ecommerce/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:ecommerce/src/localization/string_hardcoded.dart';
 import 'package:ecommerce/src/routing/app_router.dart';
 import 'package:flutter/material.dart';

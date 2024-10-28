@@ -1,30 +1,30 @@
-import 'package:ecommerce/src/features/account/account_screen.dart';
-import 'package:ecommerce/src/features/checkout/checkout_screen.dart';
-import 'package:ecommerce/src/features/leave_review_page/leave_review_screen.dart';
-import 'package:ecommerce/src/features/not_found/not_found_screen.dart';
-import 'package:ecommerce/src/features/orders_list/orders_list_screen.dart';
-import 'package:ecommerce/src/features/product_page/product_screen.dart';
-import 'package:ecommerce/src/features/products_list/products_list_screen.dart';
-import 'package:ecommerce/src/features/shopping_cart/shopping_cart_screen.dart';
-import 'package:ecommerce/src/features/sign_in/email_password_sign_in_screen.dart';
-import 'package:ecommerce/src/features/sign_in/email_password_sign_in_state.dart';
+import 'package:ecommerce/src/features/authentication/presentation/account/account_screen.dart';
+import 'package:ecommerce/src/features/authentication/presentation/sign_in/email_password_sign_in_screen.dart';
+import 'package:ecommerce/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
+import 'package:ecommerce/src/features/cart/presentation/shopping_cart/shopping_cart_screen.dart';
+import 'package:ecommerce/src/features/checkout/presentation/checkout_screen/checkout_screen.dart';
+import 'package:ecommerce/src/features/orders/presentation/orders_list/orders_list_screen.dart';
+import 'package:ecommerce/src/features/products/presentation/product_screen/product_screen.dart';
+import 'package:ecommerce/src/features/products/presentation/products_list/products_list_screen.dart';
+import 'package:ecommerce/src/features/reviews/presentation/leave_review_screen/leave_review_screen.dart';
+import 'package:ecommerce/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 enum AppRoute {
   home,
-  leaveReview,
   product,
+  leaveReview,
   cart,
   checkout,
   orders,
   account,
-  signIn
+  signIn,
 }
 
 final goRouter = GoRouter(
   initialLocation: '/',
-  debugLogDiagnostics: true,
+  debugLogDiagnostics: false,
   routes: [
     GoRoute(
       path: '/',
@@ -32,52 +32,46 @@ final goRouter = GoRouter(
       builder: (context, state) => const ProductsListScreen(),
       routes: [
         GoRoute(
-            path: 'product:id',
-            name: AppRoute.product.name,
-            builder: (context, state) {
-              final productId = state.pathParameters['id']!;
-              return ProductScreen(productId: productId);
-            },
-            routes: [
-              GoRoute(
-                path: 'review',
-                name: AppRoute.leaveReview.name,
-                pageBuilder: (context, state) {
-                  final productId = state.pathParameters['id']!;
-                  return MaterialPage(
-                    fullscreenDialog: true,
-                    child: LeaveReviewScreen(productId: productId),
-                  );
-                },
-              ),
-            ]),
-        GoRoute(
-            path: 'cart',
-            name: AppRoute.cart.name,
-            pageBuilder: (context, state) => MaterialPage(
+          path: 'product/:id',
+          name: AppRoute.product.name,
+          builder: (context, state) {
+            final productId = state.pathParameters['id']!;
+            return ProductScreen(productId: productId);
+          },
+          routes: [
+            GoRoute(
+              path: 'review',
+              name: AppRoute.leaveReview.name,
+              pageBuilder: (context, state) {
+                final productId = state.pathParameters['id']!;
+                return MaterialPage(
                   key: state.pageKey,
                   fullscreenDialog: true,
-                  child: ShoppingCartScreen(),
-                ),
-            routes: [
-              GoRoute(
-                path: 'checkout',
-                name: AppRoute.checkout.name,
-                pageBuilder: (context, state) => MaterialPage(
-                  key: state.pageKey,
-                  fullscreenDialog: true,
-                  child: CheckoutScreen(),
-                ),
-              ),
-            ]),
+                  child: LeaveReviewScreen(productId: productId),
+                );
+              },
+            ),
+          ],
+        ),
         GoRoute(
-          path: 'account',
-          name: AppRoute.account.name,
+          path: 'cart',
+          name: AppRoute.cart.name,
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             fullscreenDialog: true,
-            child: AccountScreen(),
+            child: const ShoppingCartScreen(),
           ),
+          routes: [
+            GoRoute(
+              path: 'checkout',
+              name: AppRoute.checkout.name,
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                fullscreenDialog: true,
+                child: const CheckoutScreen(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: 'orders',
@@ -85,15 +79,25 @@ final goRouter = GoRouter(
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             fullscreenDialog: true,
-            child: OrdersListScreen(),
+            child: const OrdersListScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'account',
+          name: AppRoute.account.name,
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            fullscreenDialog: true,
+            child: const AccountScreen(),
           ),
         ),
         GoRoute(
           path: 'signIn',
+          name: AppRoute.signIn.name,
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             fullscreenDialog: true,
-            child: EmailPasswordSignInScreen(
+            child: const EmailPasswordSignInScreen(
               formType: EmailPasswordSignInFormType.signIn,
             ),
           ),
