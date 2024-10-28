@@ -40,6 +40,7 @@ dependencies:
   flutter_layout_grid: ^2.0.7  # Used for content-sized items in the products grid layout
   flutter_rating_bar: ^4.0.1   # Used for the "leave a rating" feature
   go_router: ^14.3.0
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
