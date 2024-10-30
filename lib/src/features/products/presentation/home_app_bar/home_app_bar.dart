@@ -1,4 +1,5 @@
 import 'package:ecommerce/src/constants/breakpoints.dart';
+import 'package:ecommerce/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce/src/features/products/presentation/home_app_bar/more_menu_button.dart';
 import 'package:ecommerce/src/features/products/presentation/home_app_bar/shopping_cart_icon.dart';
 import 'package:ecommerce/src/localization/string_hardcoded.dart';
@@ -6,6 +7,7 @@ import 'package:ecommerce/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/src/common_widgets/action_text_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 /// Custom [AppBar] widget that is reused by the [ProductsListScreen] and
@@ -14,19 +16,19 @@ import 'package:go_router/go_router.dart';
 /// - [ShoppingCartIcon]
 /// - Orders button
 /// - Account or Sign-in button
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // TODO: get user from auth repository
-    const user = AppUser(uid: '123', email: 'test@test.com');
+    final user = ref.watch(authStateChangeProviderr).value;
     final screenWidth = MediaQuery.of(context).size.width;
 
     if (screenWidth < Breakpoint.tablet) {
       return AppBar(
         title: Text('My Shop'.hardcoded),
-        actions: const [
+        actions:  [
           ShoppingCartIcon(),
           MoreMenuButton(user: user),
         ],
