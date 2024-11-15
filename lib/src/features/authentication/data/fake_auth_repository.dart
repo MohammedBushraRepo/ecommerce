@@ -3,7 +3,8 @@ import 'package:ecommerce/src/utils/in_memory_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeAuthRepository {
-  final _authState = InMemoryStore<AppUser?>(null);
+  final _authState =
+      InMemoryStore<AppUser?>(null); //initalize the fake repository
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;
@@ -33,7 +34,8 @@ class FakeAuthRepository {
     _authState.value = null;
   }
 
-  void dispose() => _authState.close();
+  void dispose() =>
+      _authState.close(); //to close when we dont need our auth repository
 
   void _createNewUser(String email) {
     _authState.value = AppUser(
